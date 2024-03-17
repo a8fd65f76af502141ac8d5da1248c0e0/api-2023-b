@@ -13,9 +13,7 @@ services:
       - "${APP_PORT}:${APP_PORT}"
     working_dir: "/var/api"
     volumes:
-      - ./cli:/cli:rw
       - ./src:/src:rw
-      - ./test:/test:rw
       - ./.eslintrc.js:/.eslintrc.js:rw
       - ./entrypoint.sh:/entrypoint.sh:rw
       - ./nest-cli.json:/nest-cli.json:rw

@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Body, Param, Delete, NotFoundException, Put, ConflictException} from "@nestjs/common";
+import {Body, ConflictException, Controller, Delete, Get, NotFoundException, Param, Post, Put} from "@nestjs/common";
 import {GroupNotFoundException, GroupService, ParticipantNotFoundException} from "../services/group.service";
 import {Optional} from "../../core/common/types/optional";
 import {
@@ -35,11 +35,11 @@ class GroupIdDto {
 }
 
 class UpdateGroupDto {
-    @ApiProperty({type: String, required: false})
-    @IsString()
+    @ApiProperty({required: true, type: String, description: "API Property"})
     @IsOptional()
+    @IsString()
     name: Optional<string>;
-    @ApiProperty({type: String, required: false})
+    @ApiProperty({required: false, type: String, description: "API Property"})
     @IsString()
     @IsOptional()
     description: Optional<string>;
@@ -77,8 +77,8 @@ class GroupParticipantIdDto {
     @Type(() => Number)
     groupId: number;
     @ApiProperty({type: "integer"})
-    @IsInt()
     @Type(() => Number)
+    @IsInt()
     participantId: number;
 }
 
@@ -90,13 +90,36 @@ class RecipientDto {
 }
 
 class GetParticipantResponseDto {
-    @ApiProperty({type: Number})
+    @ApiProperty({
+        type: "integer",
+        required: true,
+        description: "Integer field",
+    })
+    @Type(() => Number)
+    @IsInt()
     id: number;
-    @ApiProperty({type: String})
+    @ApiProperty({
+        type: String,
+        required: true,
+        description: "String field",
+    })
+    @IsString()
     name: string;
-    @ApiProperty({type: String, nullable: true})
+    @ApiProperty({
+        type: String,
+        nullable: true,
+        description: "String nullable field",
+    })
+    @IsOptional()
+    @IsString()
     wish: string | null;
-    @ApiProperty({type: RecipientDto, nullable: true})
+    @ApiProperty({
+        type: RecipientDto,
+        nullable: true,
+        description: "Recipient dto nullable field",
+    })
+    @IsOptional()
+    @IsString()
     recipient: RecipientDto | null;
 }
 
@@ -136,7 +159,7 @@ export class GroupController {
     }
 
     @ApiTags("group")
-    @ApiOperation({})
+    @ApiOperation({summary: "Summary"})
     @ApiOkResponse({type: GetAllGroupsResponseDto, isArray: true})
     @Get()
     async findAll(): Promise<GetAllGroupsResponseDto[]> {
@@ -146,8 +169,8 @@ export class GroupController {
 
     @ApiTags("group")
     @ApiNotFoundResponse({description: "Группы не существует"})
-    @ApiOkResponse({type: SingleGroupResponseDto})
-    @ApiOperation({})
+    @ApiOkResponse({})
+    @ApiOperation({summary: "Summary"})
     @Get(":id")
     async findOne(@Param() {id}: GroupIdDto): Promise<SingleGroupResponseDto> {
         try {
