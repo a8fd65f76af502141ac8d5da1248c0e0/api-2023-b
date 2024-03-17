@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
 npm install
-npm run start:dev
+npm run build
+npm run start
